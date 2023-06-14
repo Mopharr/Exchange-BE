@@ -5,10 +5,11 @@ import User from "../models/User";
 
 export const Register = async (req: Request, res: Response) => {
   try {
-    const { fullName, userName, email, password, option } = req.body;
+    const { fullName, userName, email, password } = req.body;
     const user = await User.findOne({ email: email });
-    let atpos = email.indexOf("@");
-    let domain = email.split("@")[1];
+    let atpos = email?.indexOf("@");
+    let domain = email?.split("@")[1];
+    // console.log(email, atpos, domain)
     if (user) {
       return res
         .status(400)
@@ -24,7 +25,7 @@ export const Register = async (req: Request, res: Response) => {
       userName,
       email,
       password: passwordHash,
-      option,
+      // option,
     });
     const saved = await newUser.save();
     return res.status(200).json({ success: true, data: saved });
@@ -101,7 +102,7 @@ export const UpdateAmt = async (req: Request, res: Response) => {
     userName: user.userName,
     email,
     password: user.password,
-    option: user.option,
+    // option: user.option,
     amount: user.amount + amount
   };
   const updateUser = await User.findOneAndUpdate(email, payload, {
